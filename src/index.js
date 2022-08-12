@@ -13,10 +13,25 @@ app.use(morgan("combined"));
 // Template engine
 app.engine("hbs", engine({ extname: ".hbs" }));
 app.set("view engine", "hbs");
-app.set("views", path.join(__dirname, "resource\\views"));
+app.set("views", path.join(__dirname, "resource\\views")); // neu chay bang cmd
+
+app.use(
+	express.urlencoded({
+		extended: true,
+	})
+);
+app.use(express.json());
+
+// neu chay server bang terminal
+// app.set("views", path.join(__dirname, "resource/views"));
 
 app.get("/", (req, res) => {
 	res.render("home");
+});
+
+app.post("/search", (req, res) => {
+	console.log(req.body);
+	res.send("");
 });
 
 app.get("/news", (req, res) => {
