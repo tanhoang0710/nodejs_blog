@@ -19,6 +19,8 @@ app.use(morgan('combined'));
 // Template engine
 app.engine('hbs', engine({ extname: '.hbs' }));
 app.set('view engine', 'hbs');
+
+// app.set('views', path.join(__dirname, 'resource', 'views')); // chay bang cmd hay terminal deu duoc
 app.set('views', path.join(__dirname, 'resource\\views')); // neu chay bang cmd
 
 app.use(
@@ -35,5 +37,5 @@ app.use(express.json());
 route(app);
 
 app.listen(port, () => {
-	console.log(`Example app listening on port ${port}`);
+	console.log(`App listening on port ${port}`);
 });
