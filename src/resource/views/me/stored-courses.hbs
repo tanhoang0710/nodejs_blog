@@ -29,7 +29,8 @@
 			</select>
 
 			<button
-				class='btn btn-primary btn-sm disabled check-all-submit-btn'
+				class='btn btn-primary btn-sm check-all-submit-btn'
+				disabled
 			>Thực hiện</button>
 		</div>
 
@@ -133,7 +134,7 @@
 	$('input[name="courseIds[]"]'); var checkboxAll = $('#checkbox-all'); var
 	btnDeleteCourse = document.getElementById('btn-delete-course'); var
 	checkAllSubmitBtn = $('.check-all-submit-btn'); var containerForm =
-	document.forms['container-form'];
+	$('form[name="container-form"]');
 	$('#delete-course-modal').on('show.bs.modal', (e) => { var button =
 	$(e.relatedTarget); courseId = button.data('id'); });
 	btnDeleteCourse.onclick = function () { deleteForm.action =
@@ -143,10 +144,8 @@
 	}); courseItemCheckbox.change(() => { var isCheckedAll =
 	courseItemCheckbox.length === $('input[name="courseIds[]"]:checked').length;
 	checkboxAll.prop('checked', isCheckedAll); renderCheckAllSubmitBtn(); });
-	checkAllSubmitBtn.on('submit', (e) => { var isSubmittable =
-	!$(this).hasClass('disabled'); if (!isSubmittable) { e.preventDefault(); }
-	}); function renderCheckAllSubmitBtn() { var checkedCount =
+	function renderCheckAllSubmitBtn() { var checkedCount =
 	$('input[name="courseIds[]"]:checked').length; if (checkedCount) {
-	checkAllSubmitBtn.removeClass('disabled'); } else {
-	checkAllSubmitBtn.addClass('disabled'); } } });
+	checkAllSubmitBtn.attr('disabled', false); } else {
+	checkAllSubmitBtn.attr('disabled', true); } } });
 </script>
