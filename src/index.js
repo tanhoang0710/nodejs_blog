@@ -19,6 +19,16 @@ app.use(morgan('combined'));
 
 app.use(methodOverride('_method'));
 
+app.use(function (req, res, next) {
+	if (['vethuong', 'vevip'].includes(req.query.ve)) {
+		req.face = 'gach gach gach';
+		return next();
+	}
+	res.status(403).json({
+		message: 'Access denied',
+	});
+});
+
 // Template engine
 app.engine(
 	'hbs',
