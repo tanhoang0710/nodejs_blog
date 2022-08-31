@@ -6,6 +6,8 @@ const { engine } = require('express-handlebars');
 const app = express();
 const port = 3000;
 
+const SortMiddlerware = require('./app/middlewares/SortMiddleware');
+
 const route = require('./routes');
 const db = require('./config/db');
 
@@ -19,15 +21,18 @@ app.use(morgan('combined'));
 
 app.use(methodOverride('_method'));
 
-app.use(function (req, res, next) {
-	if (['vethuong', 'vevip'].includes(req.query.ve)) {
-		req.face = 'gach gach gach';
-		return next();
-	}
-	res.status(403).json({
-		message: 'Access denied',
-	});
-});
+//Custom middleware
+app.use(SortMiddlerware);
+
+// app.use(function (req, res, next) {
+// 	if (['vethuong', 'vevip'].includes(req.query.ve)) {
+// 		req.face = 'gach gach gach';
+// 		return next();
+// 	}
+// 	res.status(403).json({
+// 		message: 'Access denied',
+// 	});
+// });
 
 // Template engine
 app.engine(
@@ -36,6 +41,28 @@ app.engine(
 		extname: '.hbs',
 		helpers: {
 			sum: (a, b) => a + b,
+			sortable: (field, sort) => {
+				const sortType = field === sort.column ? sort.type : 'default';
+
+				const icons = {
+					default: 'fa-solid fa-sort',
+					asc: 'fa-solid fa-arrow-down-short-wide',
+					desc: 'fa-solid fa-arrow-down-wide-short',
+				};
+
+				const types = {
+					default: 'desc',
+					asc: 'desc',
+					desc: 'asc',
+				};
+
+				const icon = icons[sortType];
+				const type = types[sortType];
+
+				return `<a href='?_sort&column=${field}&type=${type}'><i
+							class='${icon}'
+						></i></a>`;
+			},
 		},
 	})
 );
